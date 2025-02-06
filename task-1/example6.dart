@@ -6,8 +6,6 @@ void main(){
   bool flag = true;
   int s = 0,e = input.length-1 ;
   while(s < e){
-    print("Start: $s");
-    print("End: $e");
     if(input[s] != input[e]){
       flag = false;
       break;
