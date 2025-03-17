@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Container(
-          width: 300,
+          width: 32,
           margin: EdgeInsets.all(30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
