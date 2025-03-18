@@ -14,7 +14,7 @@ class _BmiScreenState extends State<BmiScreen> {
   bool isMale = true;
   double height = 175;
   int weight = 70;
-   int age = 25;
+   int age = 24;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
