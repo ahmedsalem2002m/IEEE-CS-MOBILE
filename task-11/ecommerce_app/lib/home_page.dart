@@ -10,52 +10,64 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List categories=[
     {
-      "icon" : Icons.man,
+      "label" : "assets/images/man.png",
       "name" : "Men"
     },
     {
-      "icon" : Icons.woman,
-      "name" : "Woman"
+      "label" : "assets/images/woman.png",
+      "name" : "Women"
     },
     {
-      "icon" : Icons.electrical_services,
-      "name" : "Electric"
+      "label" : "assets/images/family.png",
+      "name" : "Family"
     },
     {
-      "icon" : Icons.car_crash_rounded,
-      "name" : "Car"
+      "label" : "assets/images/clothes.png",
+      "name" : "Clothes"
     },
     {
-      "icon" : Icons.earbuds,
-      "name" : "Earbuds"
+      "label" : "assets/images/food.png",
+      "name" : "Foods"
+    },
+    {
+      "label" : "assets/images/gift.png",
+      "name" : "Gifts"
+    },
+    {
+      "label" : "assets/images/phone.png",
+      "name" : "Phones"
+    },
+    {
+      "label" : "assets/images/car.png",
+      "name" : "Cars"
     },
 
 
   ];
   List bestSelling=[
     {
-      "icon" : "assets/images/download.jpeg",
-      "name" : "Phone 1",
+      "icon" : "assets/images/vecteezy_3d-blank-phone-screen-isolated-on-transparent-background_47242110.png",
+      "name" : "Phone",
       "description" : "Description 1",
-      "price" : 320
+      "price" : 200
     },
     {
-      "icon" : "assets/images/download.jpeg",
-      "name" : "Phone 2",
+      "icon" : "assets/images/vecteezy_realistic-watch-clipart-design-illustration_9379868.png",
+      "name" : "Watch",
       "description" : "Description 2",
-      "price" : 120
+      "price" : 150
     },
     {
-      "icon" : "assets/images/download.jpeg",
-      "name" : "Phone 3",
+      "icon" : "assets/images/vecteezy_a-suit-and-tie-on-a-transparent-background_54634913.png",
+      "name" : "Suit",
       "description" : "Description 3",
-      "price" : 220
+      "price" : 50
     },
     {
-      "icon" : "assets/images/download.jpeg",
-      "name" : "Phone 4",
+      "icon" : "assets/images/vecteezy_car-png-images-with-transparent-background_27441158.png",
+      "name" : "Car",
       "description" : "Description 4",
-      "price" : 100
+      "price" : 25000
     },
 
 
@@ -65,7 +77,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(12),
         child: ListView(
           children: [
             Row(
@@ -108,7 +120,11 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(40),
                           ),
-                          child: Icon(categories[i]["icon"], size: 40),
+                          child: Image(
+                              image: AssetImage("${categories[i]["label"]}"),
+                            height: 36,
+                            width: 36,
+                          ),
                         ),
                         Text(
                           "${categories[i]["name"]}",
