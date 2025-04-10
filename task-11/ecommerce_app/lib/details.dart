@@ -61,7 +61,7 @@ class _ItemDetailsState extends State<ItemDetails> {
           Container(
             alignment: Alignment.center,
             child: Text(
-              "${widget.data["price"]}",
+              "${widget.data["price"]}\$",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500,color: Colors.orange),
             ),
           ),
