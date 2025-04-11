@@ -1,56 +1,53 @@
 import 'package:flutter/material.dart';
 
 class TasksScreen extends StatelessWidget {
-  const TasksScreen({super.key});
+  const TasksScreen({super.key, required this.tasks});
+
+  final List<Map> tasks;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width*0.88,
-              height: MediaQuery.of(context).size.height*0.75,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.grey
-              ),
-              child: ListView.separated(
-                  itemBuilder: (context,index)=>ListTile(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 0.88,
+            height: MediaQuery.of(context).size.height * 0.75,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.grey,
+            ),
+            child: ListView.separated(
+              itemBuilder:
+                  (context, index) => ListTile(
                     title: Row(
                       children: [
-                       // Icon(Icons.check_box,color: Colors.white,),
+                        // Icon(Icons.check_box,color: Colors.white,),
                         Expanded(
                           child: Text(
-                            "Go to school",
+                            "${tasks[index]["title"]}",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
-                              color: Colors.white
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                        SizedBox(width: 12,),
+                        SizedBox(width: 12),
                         IconButton(
-                            onPressed: (){},
-                            icon: Icon(
-                              Icons.archive,
-                              color: Colors.white,
-                            )
+                          onPressed: () {},
+                          icon: Icon(Icons.archive, color: Colors.white),
                         ),
                         IconButton(
-                            onPressed: (){},
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                            )
+                          onPressed: () {},
+                          icon: Icon(Icons.delete, color: Colors.white),
                         ),
                       ],
                     ),
-                     leading: Icon(Icons.check_box,color: Colors.white,),
-                    onTap: (){
+                    leading: Icon(Icons.check_box, color: Colors.white),
+                    onTap: () {
                       print("Ontap");
                     },
                     subtitle: Padding(
@@ -59,19 +56,19 @@ class TasksScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "5:50 pm",
+                            "${tasks[index]["time"]}",
                             style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.grey[700]
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey[700],
                             ),
                           ),
                           Text(
-                              "12/2/2025",
+                            "${tasks[index]["date"]}",
                             style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.grey[700]
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey[700],
                             ),
                           ),
                         ],
@@ -81,16 +78,16 @@ class TasksScreen extends StatelessWidget {
                     //     "12/2/2023"
                     // ),
                   ),
-                  separatorBuilder: (context,index)=>Padding(
+              separatorBuilder:
+                  (context, index) => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Divider(color: Colors.black,),
+                    child: Divider(color: Colors.black),
                   ),
-                  itemCount: 40
-              ),
-            )
-          ],
-        ),
+              itemCount: tasks.length,
+            ),
+          ),
+        ],
+      ),
     );
-
   }
 }

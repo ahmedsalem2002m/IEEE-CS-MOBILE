@@ -13,6 +13,21 @@ class _ItemDetailsState extends State<ItemDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.orange,
+        iconSize: 40,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: "."),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_bag_outlined),
+            label: ".",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_outlined),
+            label: ".",
+          ),
+        ],
+      ),
       endDrawer: Drawer(),
       appBar: AppBar(
         title: Row(
@@ -45,6 +60,7 @@ class _ItemDetailsState extends State<ItemDetails> {
             child: Image(height: 200, image: AssetImage(widget.data['icon'])),
           ),
           Container(
+            padding: EdgeInsets.only(top:24),
             alignment: Alignment.center,
             child: Text(
               "${widget.data["name"]}",
@@ -59,12 +75,76 @@ class _ItemDetailsState extends State<ItemDetails> {
             ),
           ),
           Container(
+            padding: EdgeInsets.only(top:16),
             alignment: Alignment.center,
             child: Text(
               "${widget.data["price"]}\$",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500,color: Colors.orange),
             ),
           ),
+          Container(
+            padding: EdgeInsets.only(top:16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(width: 42,),
+                Text(
+                  "Color: ",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600,color: Colors.grey[600]),
+                ),
+                Row(
+                  children: [Icon(Icons.circle,size: 32,color: Colors.grey,),
+                    Text(
+                      "Grey",
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600,color: Colors.black),
+                    ),],
+                ),
+                Row(children: [
+                  Icon(Icons.circle,size: 32,color: Colors.black,),
+                  Text(
+                    "Black",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600,color: Colors.black),
+                  ),
+                ],
+                ),
+                SizedBox(width: 42,),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(top:16),
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Size: ",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600,color: Colors.grey[600]),
+
+                ),
+                Text(
+                  "        39   40   41   42   43",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600,color: Colors.black),
+
+                ),
+              ],
+            ),
+          ),
+          Container(
+            // padding: EdgeInsets.symmetric(horizontal: 44),
+            color: Colors.black,
+            margin: EdgeInsets.symmetric(vertical: 32,horizontal: 44),
+            child: MaterialButton(
+              padding: EdgeInsets.all(16),
+                onPressed:(){},
+              child: Text(
+                "Add To Cart",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900,color: Colors.white),
+
+              ),
+            ),
+          ),
+
         ],
       ),
     );

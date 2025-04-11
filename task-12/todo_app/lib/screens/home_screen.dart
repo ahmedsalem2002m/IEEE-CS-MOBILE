@@ -1,10 +1,11 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:todo_app/screens/add_task_screen.dart';
 import 'package:todo_app/screens/archive_screen.dart';
 import 'package:todo_app/screens/done_screen.dart';
 import 'package:todo_app/screens/tasks_screen.dart';
-
 import '../widgets/reusable_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,8 +25,55 @@ class _HomeScreenState extends State<HomeScreen> {
   final NotchBottomBarController _controller = NotchBottomBarController(
     index: 0,
   );
-  List<Widget> screens = [TasksScreen(), ArchiveScreen(), DoneScreen()];
+  List<Widget> get screens => [
+    TasksScreen(tasks: tasks),
+    ArchiveScreen(),
+    DoneScreen(),
+  ];
   bool isBottomSheetShow = false;
+  late Database database;
+  List<Map> tasks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    createDatabase();
+  }
+
+  void createDatabase() async {
+    database = await openDatabase(
+      'path.db',
+      version: 1,
+      onCreate: (Database db, int version) async {
+        await db.execute(
+          'CREATE TABLE Tasks (id INTEGER PRIMARY KEY, title TEXT, time TEXT, date TEXT, status TEXT)',
+        );
+      },
+    );
+
+    tasks = await getDataFromDatabase();
+    setState(() {});
+  }
+
+  Future<void> insertToDatabase({
+    required String title,
+    required String time,
+    required String date,
+    required String status,
+  }) async {
+    await database.transaction((txn) async {
+      await txn.rawInsert(
+        'INSERT INTO Tasks(title, time, date, status) VALUES("$title", "$time", "$date", "$status")',
+      );
+    });
+
+    tasks = await getDataFromDatabase();
+    setState(() {});
+  }
+
+  Future<List<Map>> getDataFromDatabase() async {
+    return await database.rawQuery('SELECT * FROM Tasks');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,78 +129,27 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async{
           if (isBottomSheetShow) {
             if (_formKey.currentState!.validate()) {
-              Navigator.pop(context);
-              isBottomSheetShow = false;
+              insertToDatabase(
+                title: _titleController.text,
+                time: _timeController.text,
+                date: _dateController.text,
+                status: "status",
+              ).then((value) {
+                Navigator.pop(context);
+                isBottomSheetShow = false;
+              });
             }
           } else {
             _scaffoldKey.currentState!
                 .showBottomSheet((context) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // TextFormField(
-                          //   controller: _titleController,
-                          //   validator: (value){
-                          //     if(value!.isEmpty){
-                          //       return "Please enter your task name";
-                          //     }
-                          //     return null;
-                          //   },
-                          //   decoration: InputDecoration(
-                          //     border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                          //     labelText: "Task Name",
-                          //     prefixIcon: Icon(Icons.title)
-                          //   ),
-                          // ),
-                          defaultTextFormField(
-                            labelText: "Task Name",
-                            controller: _titleController,
-                            icon: Icons.title,
-                            onTap: () {},
-                            text: "enter your task name",
-                          ),
-                          SizedBox(height: 16),
-                          defaultTextFormField(
-                            labelText: "Task Time",
-                            controller: _timeController,
-                            icon: Icons.timer_rounded,
-                            onTap: () {
-                              showTimePicker(
-                                context: context,
-                                initialTime: TimeOfDay.now(),
-                              ).then((value) {
-                                _timeController.text = value!.format(context);
-                              });
-                            },
-                            text: "enter your task time",
-                          ),
-                          SizedBox(height: 16),
-                          defaultTextFormField(
-                            labelText: "Task Date",
-                            controller: _dateController,
-                            icon: Icons.date_range_outlined,
-                            onTap: () {
-                              showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime.now(),
-                                lastDate: DateTime.parse("3025-04-03"),
-                              ).then((value){
-                                _dateController.text = DateFormat.yMMMd().format(value!);
-                              });
-                            },
-                            text: "enter your task date ",
-                          ),
-                        ],
-                      ),
-                    ),
+                  return AddTaskScreen(
+                    formKey: _formKey,
+                    timeController: _timeController,
+                    titleController: _titleController,
+                    dateController: _dateController,
                   );
                 })
                 .closed
