@@ -25,56 +25,62 @@ class _HomeScreenState extends State<HomeScreen> {
   final NotchBottomBarController _controller = NotchBottomBarController(
     index: 0,
   );
-  List<Widget> get screens => [
-    TasksScreen(tasks: tasks),
-    ArchiveScreen(),
-    DoneScreen(),
-  ];
-  bool isBottomSheetShow = false;
-  late Database database;
-  List<Map> tasks = [];
+  // List<Widget> get screens => [
+  //   TasksScreen(tasks: tasks),
+  //   ArchiveScreen(),
+  //   DoneScreen(),
+  // ];
+  // bool isBottomSheetShow = false;
+  // late Database database;
+  // List<Map> tasks = [];
+  //
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   createDatabase();
+  // }
+  //
+  // void createDatabase() async {
+  //   database = await openDatabase(
+  //     'path.db',
+  //     version: 1,
+  //     onCreate: (Database db, int version) async {
+  //       await db.execute(
+  //         'CREATE TABLE Tasks (id INTEGER PRIMARY KEY, title TEXT, time TEXT, date TEXT, status TEXT)',
+  //       );
+  //     },
+  //   );
+  //
+  //   tasks = await getDataFromDatabase();
+  //   setState(() {});
+  // }
+  //
+  // Future<void> insertToDatabase({
+  //   required String title,
+  //   required String time,
+  //   required String date,
+  //   required String status,
+  // }) async {
+  //   await database.transaction((txn) async {
+  //     await txn.rawInsert(
+  //       'INSERT INTO Tasks(title, time, date, status) VALUES("$title", "$time", "$date", "$status")',
+  //     );
+  //   });
+  //
+  //   tasks = await getDataFromDatabase();
+  //   setState(() {});
+  // }
+  //
+  // Future<List<Map>> getDataFromDatabase() async {
+  //   return await database.rawQuery('SELECT * FROM Tasks');
+  // }
+
 
   @override
   void initState() {
     super.initState();
     createDatabase();
   }
-
-  void createDatabase() async {
-    database = await openDatabase(
-      'path.db',
-      version: 1,
-      onCreate: (Database db, int version) async {
-        await db.execute(
-          'CREATE TABLE Tasks (id INTEGER PRIMARY KEY, title TEXT, time TEXT, date TEXT, status TEXT)',
-        );
-      },
-    );
-
-    tasks = await getDataFromDatabase();
-    setState(() {});
-  }
-
-  Future<void> insertToDatabase({
-    required String title,
-    required String time,
-    required String date,
-    required String status,
-  }) async {
-    await database.transaction((txn) async {
-      await txn.rawInsert(
-        'INSERT INTO Tasks(title, time, date, status) VALUES("$title", "$time", "$date", "$status")',
-      );
-    });
-
-    tasks = await getDataFromDatabase();
-    setState(() {});
-  }
-
-  Future<List<Map>> getDataFromDatabase() async {
-    return await database.rawQuery('SELECT * FROM Tasks');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

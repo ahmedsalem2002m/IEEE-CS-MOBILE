@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TasksScreen extends StatelessWidget {
-  const TasksScreen({super.key, required this.tasks});
+   TasksScreen({super.key, });
 
   final List<Map> tasks;
 
