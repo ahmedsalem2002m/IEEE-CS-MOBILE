@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
+import 'package:weather_app/models/weather_model.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key, required this.cityName});
-  final String cityName;
+  HomePage({super.key, required this.weatherModel,});
+  final WeatherModel weatherModel;
+
 
 
   @override
@@ -62,15 +65,15 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.cityName,
+                        widget.weatherModel.cityName,
                         style: TextStyle(
-                          fontSize: 32,
+                          fontSize: 30,
                           fontWeight: FontWeight.w400,
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                        "54°",
+                        "${widget.weatherModel.tempC}°C",
                         style: TextStyle(
                           fontSize: 65,
                           fontWeight: FontWeight.w400,
@@ -84,15 +87,15 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               Image(
                                 image: NetworkImage(
-                                  'https://cdn.weatherapi.com/weather/64x64/night/113.png',
+                                  'https:${widget.weatherModel.mainIcon}',
                                 ),
-                                width: 30,
+                                width: 40,
                                 height: 40,
                               ),
                               Text(
-                                "Heavy Rain",
+                                widget.weatherModel.state,
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                   color: Colors.white,
                                 ),
@@ -131,8 +134,24 @@ class _HomePageState extends State<HomePage> {
                             itemBuilder: (context,index)=>Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                index <=11 ? Text(
+                                  '${
+                                      widget.weatherModel.foreCastDay[0]
+                                          .hour[index].time.split(" ")[1].split(
+                                          ":")[0]
+                                  }AM',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                  ),
+                                ):
                                 Text(
-                                  "12 Pm",
+                                  '${
+                                    widget.weatherModel.foreCastDay[0]
+                                        .hour[index].time.split(" ")[1].split(
+                                        ":")[0]
+                                  }PM',
                                   style: TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.w700,
@@ -140,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 Text(
-                                  "54°",
+                                  "${widget.weatherModel.foreCastDay[0].hour[index].temp}°",
                                   style: TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.w700,
@@ -149,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 Image(
                                   image: NetworkImage(
-                                    'https://cdn.weatherapi.com/weather/64x64/night/113.png',
+                                    'https:${widget.weatherModel.foreCastDay[0].hour[index].icon}',
                                   ),
                                   width: 40,
                                   height: 40,
@@ -163,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                               height: 1,
                               color: Colors.grey,
                             ),),
-                            itemCount: 5),
+                            itemCount: widget.weatherModel.foreCastDay[0].hour.length),
                       )
                     ],
                   ),
@@ -207,30 +226,31 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "Friday",
+                              DateFormat.EEEE().format(DateTime.parse(widget.weatherModel.foreCastDay[index].date)),
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white,
                               ),
                             ),
+
                             Text(
-                              "9/26",
+                              widget.weatherModel.foreCastDay[index].date,
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white,
                               ),
                             ),
                             Image(
                               image: NetworkImage(
-                                'https://cdn.weatherapi.com/weather/64x64/night/113.png',
+                                'https:${widget.weatherModel.foreCastDay[index].listIcon}',
                               ),
                               width: 30,
                               height: 30,
                             ),
                             Text(
-                              "54°",
+                              "${widget.weatherModel.foreCastDay[index].avgT}°",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
@@ -248,7 +268,7 @@ class _HomePageState extends State<HomePage> {
                         height:130 ,
                       ),
                     ),
-                    itemCount: 7),
+                    itemCount: widget.weatherModel.foreCastDay.length),
               )
             ],
           ),

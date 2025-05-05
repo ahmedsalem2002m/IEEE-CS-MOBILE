@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/screens/home_page.dart';
+
+import '../server/api_helper.dart';
 
 class SearchPage extends StatelessWidget {
    SearchPage({super.key});
   final TextEditingController cityController = TextEditingController();
   var formKey = GlobalKey<FormState>();
+  late WeatherModel weatherModel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,9 +57,10 @@ class SearchPage extends StatelessWidget {
             ),
             SizedBox(height: 22,),
             ElevatedButton(
-                onPressed: (){
+                onPressed: () async{
                   if(formKey.currentState!.validate()){
-                    Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage(cityName: cityController.text,)));
+                    weatherModel = await ApiHelper().getData(cityController.text);
+                    Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage(weatherModel: weatherModel,)));
                   }
                 },
                 child: Container(
